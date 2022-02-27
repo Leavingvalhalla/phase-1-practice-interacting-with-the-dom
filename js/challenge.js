@@ -1,11 +1,12 @@
 const counter = document.getElementById('counter');
 let likes = {};
 let paused = false;
+
 const plusButton = document
   .getElementById('plus')
   .addEventListener('click', (e) => {
     if (paused === false) {
-      counter.innerText++;
+      countNum++;
     }
   });
 
@@ -13,7 +14,7 @@ const minusButton = document
   .getElementById('minus')
   .addEventListener('click', (e) => {
     if (paused === false) {
-      counter.innerText--;
+      countNum--;
     }
   });
 
@@ -21,11 +22,18 @@ const likeButton = document
   .getElementById('heart')
   .addEventListener('click', (e) => {
     if (paused === false) {
-      if (counter.innerText in likes) {
+      if (document.getElementById(counter.innerText)) {
+        const li = document.getElementById(counter.innerText);
         likes[counter.innerText] += 1;
+        li.innerText = `${counter.innerText} has been liked ${
+          likes[counter.innerText]
+        } times!`;
+        // prettier-ignore
       } else {
         likes[counter.innerText] = 1;
         const likeMessage = document.createElement('li');
+        likeMessage.id = counter.innerText;
+        console.log(likeMessage);
         likeMessage.innerText = `${counter.innerText} has been liked ${
           likes[counter.innerText]
         } times!`;
