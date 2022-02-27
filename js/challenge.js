@@ -1,7 +1,6 @@
 const counter = document.getElementById('counter');
-let likes = 0;
+let likes = {};
 let paused = false;
-
 const plusButton = document
   .getElementById('plus')
   .addEventListener('click', (e) => {
@@ -22,10 +21,16 @@ const likeButton = document
   .getElementById('heart')
   .addEventListener('click', (e) => {
     if (paused === false) {
-      likes++;
-      const likeMessage = document.createElement('p');
-      likeMessage.innerText = `${counter.innerText} has been liked ${likes} times!`;
-      document.querySelector('.likes').appendChild(likeMessage);
+      if (counter.innerText in likes) {
+        likes[counter.innerText] += 1;
+      } else {
+        likes[counter.innerText] = 1;
+        const likeMessage = document.createElement('li');
+        likeMessage.innerText = `${counter.innerText} has been liked ${
+          likes[counter.innerText]
+        } times!`;
+        document.querySelector('.likes').appendChild(likeMessage);
+      }
     }
   });
 
@@ -50,11 +55,13 @@ let counterTimer = setInterval(() => {
   counter.innerText++;
 }, 1000);
 
-const comment = document.getElementById('comment-form');
-
-const commentClick = comment.addEventListener('submit', postComment);
+const formSubmit = document
+  .getElementById('comment-form')
+  .addEventListener('submit', postComment);
 
 function postComment(event) {
-  comment.preventDefault();
-  console.log(comment.textContent);
+  event.preventDefault();
+  const comment = document.createElement('p');
+  comment.innerText = document.getElementById('comment-input').value;
+  document.getElementById('list').appendChild(comment);
 }
